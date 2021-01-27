@@ -29,7 +29,7 @@ router.post('/create', validateSession, (req, res) => {
   *** GET ENTRIES BY USER ***
 ******************************/
 
-router.get("/mine", validateSession, (req, res) => {
+router.get("/", validateSession, (req, res) => {
     let userid = req.user.id
     Log.findAll({
         where: {owner_id: userid}
