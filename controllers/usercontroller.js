@@ -10,8 +10,8 @@ const bcrypt = require('bcryptjs');
 router.post('/register', function(req, res) {
 
     User.create({
-        email: req.body.user.email,
-        password: bcrypt.hashSync(req.body.user.password, 10)
+        username: req.body.user.username,
+        passwordhash: bcrypt.hashSync(req.body.user.password, 10)
     })
     .then(
         function createSuccess(user) {
@@ -35,12 +35,12 @@ router.post('/register', function(req, res) {
 router.post('/login', function(req, res) {
     User.findOne({
         where: {
-            email: req.body.user.email
+            username: req.body.user.username
         }
     })
     .then(function loginSuccess(user) {
         if(user) {
-            bcrypt.compare(req.body.user.password, user.password, function(err, matches){
+            bcrypt.compare(req.body.user.password, user.passwordhash, function(err, matches){
                 if(matches) {
                     let token = jwt.sign({id: user.id}, process.env.JWT_SECRET, {expiresIn: 60* 60* 24})
 
